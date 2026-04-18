@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Anime Wibuku v2 | Komunitas Anime & Cosplay</title>
+        <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/h59ub7.png">
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #f1f3f9;
+            scroll-behavior: smooth;
+        }
+
+        /* Background dengan gambar dan efek parallax lembut */
+        .bg-outer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-image {
+            background-image: url('https://files.catbox.moe/e31dpb.jpg');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            filter: brightness(0.65) contrast(1.05);
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+
+        /* Overlay gradien modern (dark + subtle purple) */
+        .overlay-grad {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0,0,0,0.55), rgba(10,8,20,0.85));
+            backdrop-filter: blur(3px);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== GLASSMORPHISM & ANIMATION ===== */
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-card {
+            background: rgba(18, 22, 40, 0.55);
+            backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 200, 130, 0.3);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
+            transition: all 0.25s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 170, 80, 0.7);
+            background: rgba(25, 30, 50, 0.65);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero-modern {
+            text-align: center;
+            padding: 2.2rem 1.5rem;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s ease-out;
+        }
+
+        .hero-modern h1 {
+            font-size: 3.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6C7, #FFB86C, #FF9642);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .hero-modern p {
+            font-size: 1.2rem;
+            opacity: 0.85;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        /* Tombol Join Grup */
+        .join-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0 1.2rem;
+        }
+
+        .btn-join {
+            background: linear-gradient(95deg, #25D366, #128C7E);
+            padding: 0.9rem 2.2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+            transition: 0.2s;
+            border: none;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-join i {
+            font-size: 1.5rem;
+        }
+
+        .btn-join:hover {
+            transform: scale(1.03);
+            background: linear-gradient(95deg, #2eea77, #15ac92);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.4);
+        }
+
+        /* Rules section */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #FFA559;
+            padding-left: 1.2rem;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.9rem;
+            list-style: none;
+        }
+
+        .rules-grid li {
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(5px);
+            padding: 0.8rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.1s;
+            font-weight: 500;
+        }
+
+        .rules-grid li i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: #FFBF7A;
+        }
+
+        /* Owner & Admin dalam 2 kolom */
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0 2rem;
+        }
+
+        .owner-highlight {
+            flex: 1.2;
+            min-width: 240px;
+            padding: 1.8rem 1rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .admin-list-card {
+            flex: 2;
+            padding: 1.5rem 1.2rem;
+        }
+
+        .owner-avatar-lg {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #FFB95C;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            background: #2a2540;
+        }
+
+        .owner-avatar-lg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .owner-name {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #FFE3B0, #FFB259);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .badge-owner {
+            background: #FF8C42;
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #1e1b1a;
+        }
+
+        .admin-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,240,0.05);
+            padding: 0.8rem 1.2rem;
+            border-radius: 80px;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .admin-item:hover {
+            background: rgba(255, 180, 100, 0.15);
+            transform: translateX(5px);
+        }
+
+        .admin-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(145deg, #3a2e44, #231f32);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFCD94;
+            border: 1px solid #ffaa66;
+        }
+
+        .admin-info {
+            flex: 1;
+        }
+
+        .admin-username {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFF2E0;
+        }
+
+        .admin-tag {
+            font-size: 0.7rem;
+            background: #41352a;
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 30px;
+        }
+
+        /* Gallery Modern */
+        .gallery-wrapper {
+            margin-top: 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.6rem;
+            margin-top: 1.2rem;
+        }
+
+        .gallery-card {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(255, 190, 110, 0.4);
+            aspect-ratio: 4 / 3;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-card:hover {
+            transform: scale(1.02);
+            border-color: #FFB347;
+            box-shadow: 0 18px 30px -8px black;
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Footer */
+        .footer-cool {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 750px) {
+            .container {
+                padding: 1.2rem;
+            }
+            .hero-modern h1 {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .owner-avatar-lg {
+                width: 100px;
+                height: 100px;
+            }
+            .admin-username {
+                font-size: 1.1rem;
+            }
+            .btn-join {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* efek sparkle hover */
+        .glass-card, .btn-join {
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-outer">
+    <div class="bg-image"></div>
+</div>
+<div class="overlay-grad"></div>
+
+<div class="container">
+    <!-- Hero area dengan judul dan join grup -->
+    <div class="hero-modern glass-card">
+        <h1>✨ anime wibuku v2 ✨</h1>
+        <p>「 tempatnya wibu santuy | anime | cosplay sopan」</p>
+        <div class="join-wrapper">
+            <a href="https://chat.whatsapp.com/DgKUY5TYEEVLdWIIyfatoC?mode=gi_t" target="_blank" rel="noopener noreferrer" class="btn-join">
+                <i class="fab fa-whatsapp"></i> Gabung Grup Sekarang
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <p style="font-size: 0.75rem; opacity: 0.7;">🌐 link resmi grup WhatsApp — aktif & ramah 🌐</p>
+    </div>
+
+    <!-- Aturan Wajib -->
+    <div class="glass-card" style="padding: 1.5rem 1.8rem; margin-bottom: 2rem;">
+        <div class="section-title">
+            📜 Aturan Wajib
+        </div>
+        <ul class="rules-grid">
+            <li><i class="fas fa-ban"></i> No jomok / hentai / 18+</li>
+            <li><i class="fas fa-skull"></i> No gore / darah</li>
+            <li><i class="fas fa-bullhorn"></i> No spam</li>
+            <li><i class="fas fa-eye"></i> Kirim foto/video wajib pakai sekali lihat</li>
+            <li><i class="fas fa-heart-broken"></i> No toksik (saling menghormati ya)</li>
+            <li><i class="fas fa-link"></i> Share link grup lain wajib back dulu</li>
+            <li><i class="fas fa-calendar-alt"></i> Admin boleh buat event apa pun</li>
+            <li><i class="fas fa-camera-retro"></i> Boleh share foto anime dan cosplay (asalkan sopan)</li>
+        </ul>
+    </div>
+
+    <!-- Owner & Admin (desain lebih fresh) -->
+    <div class="team-container">
+        <!-- Owner Card -->
+        <div class="owner-highlight glass-card">
+            <div class="owner-avatar-lg">
+                <img src="https://files.catbox.moe/fl5xb8.jpg" alt="Foto Owner Aris" loading="lazy" onerror="this.src='https://placehold.co/400x400/2c2e3a/FFB86C?text=Aris'">
+            </div>
+            <div class="owner-name">@Aris</div>
+            <div class="badge-owner"><i class="fas fa-crown"></i> OWNER</div>
+            <p style="margin-top: 12px; font-size: 0.85rem;">pemimpin grup · wibu sejati</p>
+        </div>
+
+        <!-- List Admin dengan gaya modern -->
+        <div class="admin-list-card glass-card">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem;">
+                <i class="fas fa-shield-alt" style="font-size: 1.6rem; color: #FFB347;"></i>
+                <h3 style="font-size: 1.5rem; font-weight: 700;">🛡️ List Admin</h3>
+            </div>
+            <div>
+                <div class="admin-item">
+                    <div class="admin-icon">✨</div>
+                    <div class="admin-info">
+                        <div class="admin-username">@zhaa</div>
+                        <span class="admin-tag"><i class="fas fa-user-check"></i> Admin Aktif</span>
+                    </div>
+                </div>
+                <div class="admin-item">
+                    <div class="admin-icon">⚡</div>
+                    <div class="admin-info">
+                        <div class="admin-username">@Xuy</div>
+                        <span class="admin-tag"><i class="fas fa-user-check"></i> Admin Kreatif</span>
+                    </div>
+                </div>
+                <div class="admin-item">
+                    <div class="admin-icon">🎴</div>
+                    <div class="admin-info">
+                        <div class="admin-username">@todoroki</div>
+                        <span class="admin-tag"><i class="fas fa-user-check"></i> Admin Mod</span>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 12px; font-size: 0.7rem; text-align: right; opacity: 0.7;">total 3 admin | event & support</p>
+        </div>
+    </div>
+
+    <!-- Gallery Group dengan judul dan 4 gambar cantik -->
+    <div class="gallery-wrapper glass-card" style="padding: 1.5rem 1.5rem 1.8rem;">
+        <div class="section-title">
+            🖼️ Gallery Group
+            <span style="font-size: 0.9rem; font-weight: normal;">| koleksi anime</span>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-card">
+                <img src="https://images3.alphacoders.com/121/1210036.png" alt="Anime gallery 1" loading="lazy">
+            </div>
+            <div class="gallery-card">
+                <img src="https://wallpapercave.com/wp/wp8027229.jpg" alt="Anime gallery 2" loading="lazy">
+            </div>
+            <div class="gallery-card">
+                <img src="https://c4.wallpaperflare.com/wallpaper/997/47/663/anime-anime-girls-hatsune-miku-blue-hair-wallpaper-preview.jpg" alt="Hatsune Miku" loading="lazy">
+            </div>
+            <div class="gallery-card">
+                <img src="https://wallpapercave.com/wp/wp8505491.png" alt="Anime gallery 4" loading="lazy">
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 1.2rem; font-size: 0.85rem; opacity: 0.8;"><i class="fas fa-images"></i> Klik gambar untuk memperbesar? cukup nikmati visual aesthetic ✨</p>
+    </div>
+
+    <!-- Footer dengan informasi tambahan dan link group -->
+    <div class="footer-cool">
+        <span><i class="far fa-copyright"></i> anime wibuku v2 — sejak 2024</span>
+        <span><i class="fas fa-user-shield"></i> Hormati aturan, grup asik!</span>
+        <a href="https://chat.whatsapp.com/DgKUY5TYEEVLdWIIyfatoC?mode=gi_t" target="_blank" style="color: #FFCD94; text-decoration: none; font-weight: 500;"><i class="fab fa-whatsapp"></i> Link Grup WA</a>
+    </div>
+</div>
+
+<!-- optional: lightbox sederhana atau efek loading smooth -->
+<script>
+    (function() {
+        // fix gambar owner jika error
+        const ownerImg = document.querySelector('.owner-avatar-lg img');
+        if(ownerImg) {
+            ownerImg.addEventListener('error', () => {
+                ownerImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="%23FFAA55"/%3E%3Ctext x="50" y="67" font-size="38" text-anchor="middle" fill="%23221c1a" font-weight="bold"%3EA%3C/text%3E%3C/svg%3E';
+            });
+        }
+
+        // tambahan efek hover pada gallery (hanya visual)
+        const galleryImgs = document.querySelectorAll('.gallery-card');
+        galleryImgs.forEach(card => {
+            card.addEventListener('click', () => {
+                const imgSrc = card.querySelector('img')?.src;
+                if(imgSrc) {
+                    // optional: buka gambar di tab baru (lightweight)
+                    window.open(imgSrc, '_blank');
+                }
+            });
+            card.style.cursor = 'pointer';
+        });
+
+        console.log('✨ anime wibuku v2 | UI modern & link grup aktif ✨');
+    })();
+</script>
+</body>
+</html>
